@@ -7,43 +7,60 @@ using System.Threading.Tasks;
 
 namespace baker_biz.Classes
 {
-    public class RecipeIngredient : IRecipeIngredient, IInventoryItem
+    public class RecipeIngredient : IRecipeIngredient
     {
-        private string _name;
-        private int _cost;
-        private string _units;
+        public string Name { get; private set; }
+        public string AskingUnits { get; private set; }
+        public int StockingConversionMultiplier { get; private set; }
+        public string MakingUnits { get; private set; }
+        public int AmountUsed { get; private set; }
 
-        public RecipeIngredient(string name, int cost, string units)
+        public RecipeIngredient(string name, string askingUnits, int stockingConversionMultiplier, string makingUnits, int amountUsed)
         {
-            _name = name;
-            _cost = cost;
-            _units = units;
+            Name = name;
+            AskingUnits = askingUnits;
+            StockingConversionMultiplier = stockingConversionMultiplier;
+            MakingUnits = makingUnits;
+            AmountUsed = amountUsed;
         }
 
         public string GetName()
         {
-            return _name;
+            return Name;
         }
 
-        public int GetCost()
+        public string GetAskingUnits()
         {
-            return _cost;
+            return AskingUnits;
         }
 
-        public string GetUnits()
+        public int GetStockingConversionMultiplier()
         {
-            return _units;
+            //convert from the units the user input the amount as, to what it is stored as in the inventory
+            //i.e. the user is asked how many whole sticks of butter they have, but butter is used (and thus stored) in tablespoons.
+            //     this multiplier is how you get from sticks to tbsp, which is 8 tbsp per stick
+            return StockingConversionMultiplier;
+        }
+
+        public int GetAmountUsed()
+        {
+            return AmountUsed;
+        }
+
+        public string GetMakingUnits()
+        {
+            return MakingUnits;
         }
 
         public override string ToString()
         {
-            if(!string.IsNullOrEmpty(_units))
+            if(!string.IsNullOrEmpty(MakingUnits))
             {
-                return $"{_cost} {_units} of {_name}";
+                return $"{AmountUsed} {MakingUnits} of {Name}";
             }
             else
             {
-                return $"{_cost} {_name}";
+                return $"{AmountUsed} {Name}";
             }
         }
     }

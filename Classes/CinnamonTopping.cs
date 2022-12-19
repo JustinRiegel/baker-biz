@@ -22,7 +22,7 @@ namespace baker_biz.Classes
         public override List<RecipeIngredient> GetIngredientList()
         {
             var returnList = new List<RecipeIngredient>(base.GetIngredientList());
-            var cinnamonIngredient = new RecipeIngredient(Constants.CINNAMON, 1, Constants.TBSP);
+            var cinnamonIngredient = new RecipeIngredient(Constants.CINNAMON, Constants.TBSP, 1, Constants.TBSP, 1);
             returnList.Add(cinnamonIngredient);
 
             return returnList;

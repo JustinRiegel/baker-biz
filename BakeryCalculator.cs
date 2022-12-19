@@ -26,15 +26,15 @@ namespace Bakery
             recipeList.Add(applePieWithCinnamon);
             recipeList.Add(applePie);
 
-            List<IInventoryItem> inventoryItemList = new List<IInventoryItem>();
+            List<IRecipeIngredient> ingredientList = new List<IRecipeIngredient>();
             //get each unique ingredient from the list of recipes to query the user for their amounts
             foreach(var recipe in recipeList)
             {
                 foreach(var ingredient in recipe.GetIngredientList())
                 {
-                    if(!inventoryItemList.Any(i => i.GetName() == ingredient.GetName()))
+                    if(!ingredientList.Any(i => i.GetName() == ingredient.GetName()))
                     {
-                        inventoryItemList.Add(ingredient);
+                        ingredientList.Add(ingredient);
                     }
                 }
             }
@@ -47,16 +47,16 @@ namespace Bakery
                 _inventory.ClearOutInventory();
 
                 //query the user for current inventory status
-                foreach(var item in inventoryItemList)
+                foreach(var item in ingredientList)
                 {
                     var queryString = "";
-                    if(string.IsNullOrEmpty(item.GetUnits()))
+                    if(string.IsNullOrEmpty(item.GetAskingUnits()))
                     {
                         queryString = $"How many {item.GetName()} do you have?";
                     }
                     else
                     {
-                        queryString = $"How many {item.GetUnits()} of {item.GetName()} do you have?";
+                        queryString = $"How many {item.GetAskingUnits()} of {item.GetName()} do you have?";
                     }
                     var itemCount = GetUserInputPositiveInteger(queryString);
 
@@ -76,11 +76,11 @@ namespace Bakery
 
                 //report the amount of inventory left over
                 Console.WriteLine("You will have the following ingredients left over:");
-                foreach(var item in inventoryItemList)
+                foreach(var item in ingredientList)
                 {
-                    if (!string.IsNullOrEmpty(item.GetUnits()))
+                    if (!string.IsNullOrEmpty(item.GetMakingUnits()))
                     {
-                        Console.WriteLine($"{_inventory.GetInventoryItemCount(item)} {item.GetUnits()} of {item.GetName()}");
+                        Console.WriteLine($"{_inventory.GetInventoryItemCount(item)} {item.GetMakingUnits()} of {item.GetName()}");
                     }
                     else
                     {
@@ -144,7 +144,7 @@ namespace Bakery
                 maxRecipesFromIngredient = 0;
                 try
                 {
-                    maxRecipesFromIngredient = _inventory.GetInventoryItemCount(ingredient) / ingredient.GetCost();
+                    maxRecipesFromIngredient = _inventory.GetInventoryItemCount(ingredient) / ingredient.GetAmountUsed();
                 }
                 catch (Exception e)
                 {
@@ -169,7 +169,7 @@ namespace Bakery
                 //this should never happen as we've done the calculations for this above. however.
                 //if an issue ever does occur, the inventory will likely be in a bad state because we will probably have removed some, but not all, of the ingredients.
                 //this will throw off the calculation of other recipes. there are solutions for this, but that is a problem for another day
-                if (!_inventory.RemoveInventoryItem(ingredient, ingredient.GetCost() * recipeCount))
+                if (!_inventory.RemoveInventoryItem(ingredient, ingredient.GetAmountUsed() * recipeCount))
                 {
                     Console.WriteLine($"There was a discrepancy between recipe calculation and inventory amounts.");
                     return;

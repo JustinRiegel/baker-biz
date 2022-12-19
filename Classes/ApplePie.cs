@@ -22,9 +22,10 @@ namespace baker_biz.Classes
         List<RecipeIngredient> IRecipe.GetIngredientList()
         {
             var returnList = new List<RecipeIngredient>();
-            returnList.Add(new RecipeIngredient(Constants.APPLES, 3, string.Empty));
-            returnList.Add(new RecipeIngredient(Constants.SUGAR, 2, Constants.POUNDS));
-            returnList.Add(new RecipeIngredient(Constants.FLOUR, 1, Constants.POUNDS));
+            returnList.Add(new RecipeIngredient(Constants.APPLES, string.Empty, 1, string.Empty, 3));
+            returnList.Add(new RecipeIngredient(Constants.SUGAR, Constants.POUNDS, 1, Constants.POUNDS, 2));
+            returnList.Add(new RecipeIngredient(Constants.FLOUR, Constants.POUNDS, 1, Constants.POUNDS, 1));
+            returnList.Add(new RecipeIngredient(Constants.BUTTER, Constants.STICKS, 8, Constants.TBSP, 6));//8 tbsp of butter per stick, 6 tbsp per pie
 
             return returnList;
         }

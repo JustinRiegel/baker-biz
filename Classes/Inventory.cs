@@ -16,27 +16,29 @@ namespace baker_biz.Classes
 
         }
 
-        public void AddInventoryItem(IInventoryItem inventoryItem, int amount)
+        public void AddInventoryItem(IRecipeIngredient ingredient, int amount)
         {
-            string itemName = inventoryItem.GetName();
+            string itemName = ingredient.GetName();
+            //convert the user-supplied amount that is in the asking units, to the amount it should be stocked as
+            int convertedAmount = amount * ingredient.GetStockingConversionMultiplier();
 
             //check if the ingredient already has an entry in the inventory. if it exists, adjust the amount. otherwise, add it to the inventory with the appropriate amount
-            if(_inventory.Any(i => i.Key == itemName))
+            if (_inventory.Any(i => i.Key == itemName))
             {
                 //i am assuming that the amount passed to this function is always positive.
                 //since this is not exposed to the user, and the amount entry is validated when the user inputs the amounts, its PROBABLY fine.
                 //i could combine the Add and Remove functions into the same and just "add" or "remove" based on positive or negative values, but that is less readable
-                _inventory[itemName] += amount;
+                _inventory[itemName] += convertedAmount;
             }
             else
             {
-                _inventory.Add(itemName, amount);
+                _inventory.Add(itemName, convertedAmount);
             }
         }
 
-        public bool RemoveInventoryItem(IInventoryItem inventoryItem, int amount)
+        public bool RemoveInventoryItem(IRecipeIngredient ingredient, int amount)
         {
-            string itemName = inventoryItem.GetName();
+            string itemName = ingredient.GetName();
 
             //if the ingredient is in the inventory, attempt to remove the specified amount
             if (_inventory.Any(i => i.Key == itemName))
@@ -52,9 +54,9 @@ namespace baker_biz.Classes
             return false;
         }
 
-        public int GetInventoryItemCount(IInventoryItem inventoryItem)
+        public int GetInventoryItemCount(IRecipeIngredient ingredient)
         {
-            string itemName = inventoryItem.GetName();
+            string itemName = ingredient.GetName();
 
             //if the ingredient is in the inventory, return the count
             if (_inventory.Any(i => i.Key == itemName))

@@ -9,11 +9,11 @@ namespace baker_biz.Interfaces
 {
     public interface IInventory
     {
-        public void AddInventoryItem(IInventoryItem inventoryItem, int amount);
+        public void AddInventoryItem(IRecipeIngredient ingredient, int amount);
 
-        public bool RemoveInventoryItem(IInventoryItem inventoryItem, int amount);
+        public bool RemoveInventoryItem(IRecipeIngredient ingredient, int amount);
 
-        public int GetInventoryItemCount(IInventoryItem inventoryItem);
+        public int GetInventoryItemCount(IRecipeIngredient ingredient);
 
         public void ZeroOutInventory();
 

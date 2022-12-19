@@ -8,8 +8,16 @@ namespace baker_biz.Interfaces
 {
     public interface IRecipeIngredient
     {
+        public string GetName();
+
+        public string GetAskingUnits();
+
+        public int GetStockingConversionMultiplier();
+
+        public string GetMakingUnits();
+
         //TODO int is fine here until we encounter recipes with differing units, i.e. cups and ounces
-        public int GetCost();
+        public int GetAmountUsed();
 
         public string ToString();
     }
